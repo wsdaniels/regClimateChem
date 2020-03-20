@@ -119,7 +119,7 @@ model.parameters$smoothing.parameter <- 0
 # included in the model
 model.parameters$max.num.terms = c(1,  # INDEX 1
                                    1,  # INDEX 2
-                                   2,  # INDEX 3
+                                   1,  # INDEX 3
                                    1)  # INDEX 4
 
 

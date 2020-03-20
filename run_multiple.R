@@ -1,6 +1,7 @@
 rm(list = ls())
 
-library(southernHemisphereCO)
+library(regClimateChem)
+library(here)
 
 dir.name <- "/home/wdaniels/Documents/research/co_project/technote/data/5_pred"
 

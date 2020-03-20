@@ -30,7 +30,7 @@ library(here)
 # regression and lag search.
 # example_user_config_script is provided as an example of necessary configuration elements.
 #source("main_code_base/example_user_config_script.R")
-source("example_user_config_script.R")
+source("single_run_config_file.R")
 
 
 #### TIMING ####
