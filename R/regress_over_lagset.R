@@ -1,4 +1,4 @@
-regress.over.lagset <- function(lag.space.matrix, response.data, index.data, model.parameters){
+regress.over.lagset <- function(lag.space.matrix, response.data, index.data, model.parameters, conseq.val){
 
   ###############################################################################
   # This function computes a goodness of fit statistic (adjusted r squared) for
@@ -40,7 +40,7 @@ regress.over.lagset <- function(lag.space.matrix, response.data, index.data, mod
 
   # Loop over each lagset
   goodness.of.fit.list <- foreach(iLagSet = 1:nLagSets, .combine = 'c') %dopar%{
-  #for (iLagSet in 1:10){
+  #for (iLagSet in 1:nLagSets){
 
     # Add glmulti library
     library(glmulti)

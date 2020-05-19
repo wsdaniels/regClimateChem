@@ -18,7 +18,7 @@
 response.data <- list()
 
 response.data$name.of.region <- c("MaritimeSEA")
-response.data$file.path <- c("data/Carbon_Monoxide_Data")
+response.data$file.path <- c("paper_data/Carbon_Monoxide_Data")
 response.data$file.name <- c("MaritimeSEA_V7TMOPITTanomalies.csv")
 response.data$file.data.column.index <- c(3L)
 
@@ -71,7 +71,7 @@ model.parameters$regression.selection.criterion = "bic"
 #### USER INPUT: SEARCH ALGORITHM ####
 # sets the search algorithm.
 # can be either exhaustive ("h"), genetic ("g"), or stepwise ("s")
-model.parameters$search.algorithm = "s"
+model.parameters$search.algorithm = "h"
 
 
 #### USER INPUT: OPTIMIZATION CRITERION ####

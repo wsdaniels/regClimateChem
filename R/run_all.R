@@ -16,14 +16,14 @@ run.all <- function(region, algorithm){
   ### IMPORT LIBRARIES ####
   library(foreach)
   library(doParallel)
-  library(southernHemisphereCO)
+  library(regClimateChem)
   library(gtools)
 
   #### PATH SETTING ####
   # The following must be included in the working directory:
   #   A subdirectory that contains the response and index data
   # setwd("/home/jake/Desktop/math530/co_project/scripts")
-  setwd("/home/wdaniels/Documents/research/co_project/scripts")
+  setwd("/home/wdaniels/Documents/research/co_project/regClimateChem")
 
 
   #### LOAD USER SPECIFICATIONS ####
@@ -32,9 +32,9 @@ run.all <- function(region, algorithm){
   # example_user_config_script is provided as an example of necessary configuration elements.
   #source("main_code_base/example_user_config_script.R")
   temp.output <- config.func(region, algorithm)
-  index.data <- temp.output[[1]]
+  index.data       <- temp.output[[1]]
   model.parameters <- temp.output[[2]]
-  response.data <- temp.output[[3]]
+  response.data    <- temp.output[[3]]
   rm(temp.output)
 
 
@@ -78,7 +78,7 @@ run.all <- function(region, algorithm){
   #### DATA PROCESSING: CONSTRUCT A LAG SET MATRIX ####
   # Generate the full Cartesian product sets of potential lags for the model search,
   # based on the user-specified lag limits.
-  lag.space.matrix = generate.lag.space.matrix(model.parameters)
+  lag.space.matrix <- generate.lag.space.matrix(model.parameters)
 
 
   #### DATA PROCESSING: SMOOTH INDEX DATA ####
@@ -93,7 +93,8 @@ run.all <- function(region, algorithm){
   #debug(regress.over.lagset)
 
   model.evaluation.metric.list <- regress.over.lagset(lag.space.matrix, response.data,
-                                                      index.data.smoothed, model.parameters)
+                                                      index.data.smoothed, model.parameters,
+                                                      conseq.val)
 
   adj.r2.list <- unlist(model.evaluation.metric.list[seq(1,length(model.evaluation.metric.list),4)])
   bic.list <- unlist(model.evaluation.metric.list[seq(2,length(model.evaluation.metric.list),4)])
@@ -111,7 +112,8 @@ run.all <- function(region, algorithm){
   total.time <- difftime(end.time, start.time)[[1]]
 
 
-  to.return <- list(list(start.time,end.time,total.time), adj.r2.list, bic.list, coef.list, lagset.list)
+  to.return <- list(list(start.time,end.time,total.time),
+                    adj.r2.list, bic.list, coef.list, lagset.list)
 
   return(to.return)
 

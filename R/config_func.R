@@ -20,7 +20,7 @@ config.func <- function(region, algorithm){
   response.data <- list()
 
   response.data$name.of.region <- region
-  response.data$file.path <- "data/Carbon_Monoxide_Data"
+  response.data$file.path <- "paper_data/Carbon_Monoxide_Data"
   response.data$file.name <- paste(region, "_V7TMOPITTanomalies.csv", sep = "")
   response.data$file.data.column.index <- 3L
 
