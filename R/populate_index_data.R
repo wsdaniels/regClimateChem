@@ -26,6 +26,7 @@ populate.index.data <- function(specified.index.data){
   #   filled.index.data$anomaly
   ###############################################################################
 
+
   # Prepopulate
   filled.index.data <- specified.index.data
 
@@ -49,7 +50,7 @@ populate.index.data <- function(specified.index.data){
         row.names(this.data.array) <- 1:length(this.data.array$time)
       }
 
-      filled.index.data$year.month.day[[iIndex]] <- this.data.array$time
+      filled.index.data$year.month[[iIndex]] <- this.data.array$time
       filled.index.data$anomaly[[iIndex]] <- this.data.array$anomaly
 
     }

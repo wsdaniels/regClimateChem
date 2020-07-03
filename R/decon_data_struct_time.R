@@ -35,6 +35,7 @@ decon.data.struct.time <- function(con.date.data){
   nIndices <- length(con.date.data[[2]])
 
   for (iIndex in 1:nIndices){
+
     if (has.field.one == T){
       this.year.month <- con.date.data$year.month.day[[iIndex]]
       time.data.list <- deconcatenate.year.month(this.year.month)
@@ -47,8 +48,11 @@ decon.data.struct.time <- function(con.date.data){
       print("Warning: year.month.day / year.month fields are not present")
       time.data.list <- list(integer(), integer())
     }
+
     decon.date.data$year[[iIndex]] <- time.data.list[[1]]
     decon.date.data$month[[iIndex]] <- time.data.list[[2]]
+
+
   }
 
   ## Return decon.date.data

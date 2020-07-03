@@ -1,5 +1,5 @@
-compute.date.extent <- function(this.year.list, this.month.list){
-  
+compute.date.extent <- function(this.year.list, this.month.list, this.day.list){
+
   ###############################################################################
   # This function returns the start and end dates in a list
   #
@@ -15,15 +15,15 @@ compute.date.extent <- function(this.year.list, this.month.list){
   #   date.extent$end.year: The last year in the list
   #   date.extent$end.month: The last month in the list
   ###############################################################################
-  
+
   date.extent <- list()
-  
-  date.extent$start.year <- this.year.list[[1]][1]
+
+  date.extent$start.year  <- this.year.list [[1]][1]
   date.extent$start.month <- this.month.list[[1]][1]
-  
-  date.extent$end.year <- this.year.list[[1]][length(this.year.list[[1]])]
-  date.extent$end.month <- this.month.list[[1]][length(this.month.list[[1]])]
-  
+
+  date.extent$end.year  <- this.year.list [[1]][ length(this.year.list [[1]]) ]
+  date.extent$end.month <- this.month.list[[1]][ length(this.month.list[[1]]) ]
+
   return(date.extent)
 
   }

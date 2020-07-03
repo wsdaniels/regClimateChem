@@ -41,15 +41,15 @@ config.func <- function(region, algorithm){
                             "ENSO", # INDEX 3
                             "TSA")  # INDEX 4
 
-  index.data$file.path = c("data/Climate_Mode_Index_Data",  # INDEX 1
-                           "data/Climate_Mode_Index_Data",  # INDEX 2
-                           "data/Climate_Mode_Index_Data",  # INDEX 3
-                           "data/Climate_Mode_Index_Data")  # INDEX 4
+  index.data$file.path = c("paper_data/Climate_Mode_Index_Data",  # INDEX 1
+                           "paper_data/Climate_Mode_Index_Data",  # INDEX 2
+                           "paper_data/Climate_Mode_Index_Data",  # INDEX 3
+                           "paper_data/Climate_Mode_Index_Data")  # INDEX 4
 
   index.data$file.name = c("aao_month_avg.csv",    # INDEX 1
-                           "dmi_2_month_avg.csv",  # INDEX 2
+                           "dmi_month_avg.csv",  # INDEX 2
                            "nino34_month_avg.csv", # INDEX 3
-                           "satl_month_avg.csv")   # INDEX 4
+                           "tsa_month_avg.csv")   # INDEX 4
 
 
   #### USER INPUT: PERIOD OF INTEREST ####

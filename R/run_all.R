@@ -19,12 +19,6 @@ run.all <- function(region, algorithm){
   library(regClimateChem)
   library(gtools)
 
-  #### PATH SETTING ####
-  # The following must be included in the working directory:
-  #   A subdirectory that contains the response and index data
-  # setwd("/home/jake/Desktop/math530/co_project/scripts")
-  setwd("/home/wdaniels/Documents/research/co_project/regClimateChem")
-
 
   #### LOAD USER SPECIFICATIONS ####
   # The user config script is where the user sets information about how to run the linear

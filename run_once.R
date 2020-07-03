@@ -19,17 +19,15 @@ library(gtools)
 library(here)
 
 #### PATH SETTING ####
+# Set the working directory to the directory in which this file is saved.
 # The following must be included in the working directory:
 #   A subdirectory that contains the response and index data
-# setwd("/home/jake/Desktop/math530/co_project/scripts")
-#setwd("/home/wdaniels/Documents/research/co_project/scripts")
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 
 #### LOAD USER SPECIFICATIONS ####
 # The user config script is where the user sets information about how to run the linear
 # regression and lag search.
-# example_user_config_script is provided as an example of necessary configuration elements.
-#source("main_code_base/example_user_config_script.R")
 source("single_run_config_file.R")
 
 
@@ -74,7 +72,7 @@ rm(temp.output)
 #### DATA PROCESSING: CONSTRUCT A LAG SET MATRIX ####
 # Generate the full Cartesian product sets of potential lags for the model search,
 # based on the user-specified lag limits.
-lag.space.matrix = generate.lag.space.matrix(model.parameters)
+lag.space.matrix <- generate.lag.space.matrix(model.parameters)
 
 
 #### DATA PROCESSING: SMOOTH INDEX DATA ####
@@ -88,6 +86,7 @@ index.data.smoothed <- smooth(index.data, model.parameters$smoothing.parameter)
 # selection process is preserved.
 model.evaluation.metric.list <- regress.over.lagset(lag.space.matrix, response.data,
                                                     index.data.smoothed, model.parameters)
+
 
 adj.r2.list <- unlist(model.evaluation.metric.list[seq(1,length(model.evaluation.metric.list),4)])
 bic.list    <- unlist(model.evaluation.metric.list[seq(2,length(model.evaluation.metric.list),4)])

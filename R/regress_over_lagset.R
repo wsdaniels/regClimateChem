@@ -30,8 +30,8 @@ regress.over.lagset <- function(lag.space.matrix, response.data, index.data, mod
   ###############################################################################
 
   # Initialize variables
-  nLagSets <- nrow(lag.space.matrix)
-  #nLagSets <- 10
+  # nLagSets <- nrow(lag.space.matrix)
+  nLagSets <- 10
   goodness.of.fit.list <- list()
 
   # Initialize parallization parameters
@@ -40,7 +40,7 @@ regress.over.lagset <- function(lag.space.matrix, response.data, index.data, mod
 
   # Loop over each lagset
   goodness.of.fit.list <- foreach(iLagSet = 1:nLagSets, .combine = 'c') %dopar%{
-  #for (iLagSet in 1:nLagSets){
+  # for (iLagSet in 1:nLagSets){
 
     # Add glmulti library
     library(glmulti)
@@ -90,10 +90,15 @@ regress.over.lagset <- function(lag.space.matrix, response.data, index.data, mod
     bic <- log(num.obs) * num.params - 2 * ll.val
 
     # Calculate adj r2
-    r.squared <- 1 - (best.model$deviance / best.model$null.deviance)
-    sample.size <- length(best.model$residuals)
-    num.predictors <- length(best.model$coefficients) - 1
-    adj.r.squared <- 1 - (1 - r.squared)*((sample.size - 1)/(sample.size - num.predictors - 1))
+    if (model.parameters$search.algorithm != "s"){
+      r.squared <- 1 - (best.model$deviance / best.model$null.deviance)
+      sample.size <- length(best.model$residuals)
+      num.predictors <- length(best.model$coefficients) - 1
+      adj.r.squared <- 1 - (1 - r.squared)*((sample.size - 1)/(sample.size - num.predictors - 1))
+    } else {
+      adj.r.squared <- summary(best.model)$adj.r.squared
+    }
+
 
     # Save coefficients for best model
     model.coef <- best.model$coefficients

@@ -47,7 +47,6 @@ initialize.model.parameters <- function(index.data, response.data, model.paramet
   #     lag.data.limits$min.data.lag:  A 1*n int, min possible lag for index given data
   ###############################################################################
 
-
   ## Duplicate existing struct contents
   initialized.model.parameters <- model.parameters
 
@@ -60,11 +59,12 @@ initialize.model.parameters <- function(index.data, response.data, model.paramet
   response <- compute.date.extent(response.data$year, response.data$month)
 
   nIndices <- length(index.data[[3]])
-  index <- matrix(ncol = 4, nrow = nIndices)
+  index <- matrix(ncol = length(response), nrow = nIndices)
   colnames(index) <- names(response)
 
   for (iIndex in 1:nIndices){
-    index[iIndex,] <- unlist(compute.date.extent(index.data$year[iIndex], index.data$month[iIndex]))
+    index[iIndex,] <- unlist(compute.date.extent(index.data$year[iIndex],
+                                                 index.data$month[iIndex]))
   }
 
   index <- as.data.frame(index)
@@ -72,6 +72,7 @@ initialize.model.parameters <- function(index.data, response.data, model.paramet
   # Attach index names for ease of interpretability
   index <- cbind(index, index.data$name.of.index)
   colnames(index)[5] <- "name.of.index"
+
 
   # Determine lag range allowed by data for each index. Assumes full use of CO data is desired.
   lag <- data.frame(matrix(ncol = 4, nrow = nIndices))
