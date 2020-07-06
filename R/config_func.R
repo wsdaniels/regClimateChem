@@ -1,4 +1,4 @@
-config.func <- function(region, algorithm){
+config.func <- function(region){
 
   #### WORKSPACE AND STRUCTURE GUIDE ####
   # This codebase is built on three basic data structures:
@@ -73,7 +73,7 @@ config.func <- function(region, algorithm){
   #### USER INPUT: SEARCH ALGORITHM ####
   # sets the search algorithm.
   # can be either exhaustive ("h") or genetic ("g")
-  model.parameters$search.algorithm = algorithm
+  model.parameters$search.algorithm = "g"
 
 
   #### USER INPUT: OPTIMIZATION CRITERION ####
@@ -121,7 +121,7 @@ config.func <- function(region, algorithm){
   # included in the model
   model.parameters$max.num.terms = c(1,  # INDEX 1
                                      1,  # INDEX 2
-                                     2,  # INDEX 3
+                                     1,  # INDEX 3
                                      1)  # INDEX 4
 
   to.return <- list(index.data, model.parameters, response.data)

@@ -5,8 +5,8 @@ library(regClimateChem)
 ### SETUP DIRECTORY STRUCTURE ###
 # Set dir.name to the directory in which you would like to save the results
 # A directory structure will be created automatically to hold the results
-dir.name <- "/home/wdaniels/Desktop/test_dir"
-dir.create(dir.name, showWarnings = FALSE)
+output.dir <- "/home/wdaniels/Desktop/test_dir"
+dir.create(output.dir, showWarnings = FALSE)
 
 
 ### SETUP PARAMETER AND SEARCH SPACE ###
@@ -16,37 +16,53 @@ dir.create(dir.name, showWarnings = FALSE)
 regions <- c("CentralSAfrica", "CentralSAmerica", "MaritimeSEA",
              "NorthAustralasia", "SouthAustralasia", "SouthSAfrica", "SouthSAmerica")
 
-# List the algorithsm you would like to test
-algorithms <- c("s")
+# List the parameter values you want to test
+pop.size.vals <- c(100)
+imm.rate.vals <- c(0.3)
+sex.rate.vals <- c(0.1)
+mut.rate.vals <- c(1e-3)
+conseq.vals <- c(1,2,3,4,5)
+
+test.vals <- conseq.vals
 
 for (r in 1:length(regions)){
 
-  for(a in 1:length(algorithms)){
+  for(a in 1:length(test.vals)){
 
     # Print progess report
-    print(paste("Working on: ", regions[r], " ", algorithms[a], sep = ""))
+    print(cat(paste0("Working on: ", regions[r], "\n",
+                     "poulation size: ", pop.size.vals[1], "\n",
+                     "immigration rate: ", imm.rate.vals[1], "\n",
+                     "sexual reproduction rate: ", sex.rate.vals[1], "\n",
+                     "mutation rate: ", mut.rate.vals[1], "\n",
+                     "conseq value: ", conseq.vals[a], "\n",
+                     "---------------------------------------------------")))
 
     # Run code with specific parameter settings
-    temp.output <- run.all(regions[r], algorithms[a])
-    timing      <- temp.output[[1]]
-    adj.r2.list <- temp.output[[2]]
-    bic.list    <- temp.output[[3]]
-    coef.list   <- temp.output[[4]]
-    lagset.list <- temp.output[[5]]
+    this.output <- run.all(regions[r],
+                           pop.size.vals[1],
+                           imm.rate.vals[1],
+                           sex.rate.vals[1],
+                           mut.rate.vals[1],
+                           conseq.vals[a])
 
-    rm(temp.output)
 
-    # Create specific directory to hold results
-    dir.create(paste(dir.name, regions[r], sep = "/"), showWarnings = FALSE)
-    this.dir <- paste(dir.name, regions[r], algorithms[a], sep = "/")
-    dir.create(this.dir, showWarnings = FALSE)
+    # Create filename
+    this.pop.size <- sprintf('%.3e', pop.size.vals[1])
+    this.imm.rate <- sprintf('%.3e', imm.rate.vals[1])
+    this.sex.rate <- sprintf('%.3e', sex.rate.vals[1])
+    this.mut.rate <- sprintf('%.3e', mut.rate.vals[1])
+    this.conseq.val <- sprintf('%.3e', conseq.vals[a])
+
+    file.name <- paste0(regions[r], "_",
+                        this.pop.size, "_",
+                        this.imm.rate, "_",
+                        this.sex.rate, "_",
+                        this.mut.rate, "_",
+                        this.conseq.val, ".RData")
 
     # Save results as RData files
-    saveRDS(timing,      file = paste(this.dir, "timing.RData", sep = "/"))
-    saveRDS(adj.r2.list, file = paste(this.dir, "adj_r2.RData", sep = "/"))
-    saveRDS(bic.list,    file = paste(this.dir, "bic.RData",    sep = "/"))
-    saveRDS(coef.list,   file = paste(this.dir, "coef.RData",   sep = "/"))
-    saveRDS(lagset.list, file = paste(this.dir, "lagset.RData", sep = "/"))
+    saveRDS(this.output, file = paste(output.dir, file.name, sep = "/"))
 
   }
 }

@@ -1,4 +1,10 @@
-regress.over.lagset <- function(lag.space.matrix, response.data, index.data, model.parameters, conseq.val){
+regress.over.lagset <- function(lag.space.matrix, response.data,
+                                index.data, model.parameters,
+                                pop.size.val = 100,
+                                imm.rate.val = 0.3,
+                                sex.rate.val = 0.1,
+                                mut.rate.val = 1e-3,
+                                conseq.val = 5){
 
   ###############################################################################
   # This function computes a goodness of fit statistic (adjusted r squared) for
@@ -30,8 +36,8 @@ regress.over.lagset <- function(lag.space.matrix, response.data, index.data, mod
   ###############################################################################
 
   # Initialize variables
-  # nLagSets <- nrow(lag.space.matrix)
-  nLagSets <- 10
+  nLagSets <- nrow(lag.space.matrix)
+  # nLagSets <- 10
   goodness.of.fit.list <- list()
 
   # Initialize parallization parameters
@@ -40,7 +46,7 @@ regress.over.lagset <- function(lag.space.matrix, response.data, index.data, mod
 
   # Loop over each lagset
   goodness.of.fit.list <- foreach(iLagSet = 1:nLagSets, .combine = 'c') %dopar%{
-  # for (iLagSet in 1:nLagSets){
+    # for (iLagSet in 1:nLagSets){
 
     # Add glmulti library
     library(glmulti)
@@ -63,10 +69,13 @@ regress.over.lagset <- function(lag.space.matrix, response.data, index.data, mod
                        method = model.parameters$search.algorithm,
                        crit = model.parameters$regression.selection.criterion,
                        plotty = F,
-                       popsize = 40,
                        confsetsize = 1,
-                       conseq = 6,
-                       imm = 0.35)
+                       popsize = pop.size.val,
+                       imm = imm.rate.val,
+                       sexrate = sex.rate.val,
+                       mutrate = mut.rate.val,
+                       conseq = conseq.val
+        )
       )
 
       best.model <- obj@objects[[1]]

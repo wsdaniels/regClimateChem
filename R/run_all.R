@@ -1,4 +1,9 @@
-run.all <- function(region, algorithm){
+run.all <- function(region,
+                    pop.size.val,
+                    imm.rate.val,
+                    sex.rate.val,
+                    mut.rate.val,
+                    conseq.val){
 
   ############################################################################################
   # Demonstration script for high-level structures and functions associated with
@@ -25,7 +30,7 @@ run.all <- function(region, algorithm){
   # regression and lag search.
   # example_user_config_script is provided as an example of necessary configuration elements.
   #source("main_code_base/example_user_config_script.R")
-  temp.output <- config.func(region, algorithm)
+  temp.output <- config.func(region)
   index.data       <- temp.output[[1]]
   model.parameters <- temp.output[[2]]
   response.data    <- temp.output[[3]]
@@ -88,27 +93,36 @@ run.all <- function(region, algorithm){
 
   model.evaluation.metric.list <- regress.over.lagset(lag.space.matrix, response.data,
                                                       index.data.smoothed, model.parameters,
+                                                      pop.size.val,
+                                                      imm.rate.val,
+                                                      sex.rate.val,
+                                                      mut.rate.val,
                                                       conseq.val)
 
   adj.r2.list <- unlist(model.evaluation.metric.list[seq(1,length(model.evaluation.metric.list),4)])
-  bic.list <- unlist(model.evaluation.metric.list[seq(2,length(model.evaluation.metric.list),4)])
-  coef.list <- model.evaluation.metric.list[seq(3,length(model.evaluation.metric.list),4)]
-  lagset.list <- model.evaluation.metric.list[seq(4,length(model.evaluation.metric.list),4)]
+  bic.list    <- unlist(model.evaluation.metric.list[seq(2,length(model.evaluation.metric.list),4)])
+  coef.list   <-        model.evaluation.metric.list[seq(3,length(model.evaluation.metric.list),4)]
+  lagset.list <-        model.evaluation.metric.list[seq(4,length(model.evaluation.metric.list),4)]
 
-  # bic.list <- unlist(model.evaluation.metric.list[seq(1,length(model.evaluation.metric.list),3)])
-  # coef.list <- model.evaluation.metric.list[seq(2,length(model.evaluation.metric.list),3)]
-  # lagset.list <- model.evaluation.metric.list[seq(3,length(model.evaluation.metric.list),3)]
-
-  rm(model.evaluation.metric.list)
-
-
+  # Finish timer
   end.time <- Sys.time()
-  total.time <- difftime(end.time, start.time)[[1]]
+  total.time <- difftime(end.time, start.time, units = "secs")[[1]]
+
+  # Put all relavant information about the particular run into an output object
+  output.list <- list(adj.r2.list = adj.r2.list,
+                      bic.list = bic.list,
+                      coef.list = coef.list,
+                      lagset.list = lagset.list,
+                      run.time = total.time,
+                      run.parameters = list(model.parameters = model.parameters,
+                                            index.data = index.data,
+                                            response.data = response.data))
 
 
-  to.return <- list(list(start.time,end.time,total.time),
-                    adj.r2.list, bic.list, coef.list, lagset.list)
+  # Clean up
+  rm(model.evaluation.metric.list, adj.r2.list, bic.list, coef.list, lagset.list)
+  gc()
 
-  return(to.return)
+  return(output.list)
 
 }

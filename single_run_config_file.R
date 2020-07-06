@@ -72,7 +72,7 @@ model.parameters$regression.selection.criterion = "bic"
 #### USER INPUT: SEARCH ALGORITHM ####
 # sets the search algorithm.
 # can be either exhaustive ("h"), genetic ("g"), or stepwise ("s")
-model.parameters$search.algorithm = "s"
+model.parameters$search.algorithm = "g"
 
 
 #### USER INPUT: OPTIMIZATION CRITERION ####

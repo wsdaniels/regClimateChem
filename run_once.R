@@ -24,6 +24,12 @@ library(here)
 #   A subdirectory that contains the response and index data
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
+# Set the output directory to the directory in which the output is saved.
+# The output of the run_once.R script is a single .RData file
+output.dir <- "/home/wdaniels/Desktop/test_dir"
+dir.create(output.dir, showWarnings = FALSE)
+
+
 
 #### LOAD USER SPECIFICATIONS ####
 # The user config script is where the user sets information about how to run the linear
@@ -88,19 +94,32 @@ model.evaluation.metric.list <- regress.over.lagset(lag.space.matrix, response.d
                                                     index.data.smoothed, model.parameters)
 
 
+### DATA PACKAGING ###
+# Unlist output from regress.over.lagset
 adj.r2.list <- unlist(model.evaluation.metric.list[seq(1,length(model.evaluation.metric.list),4)])
 bic.list    <- unlist(model.evaluation.metric.list[seq(2,length(model.evaluation.metric.list),4)])
 coef.list   <-        model.evaluation.metric.list[seq(3,length(model.evaluation.metric.list),4)]
 lagset.list <-        model.evaluation.metric.list[seq(4,length(model.evaluation.metric.list),4)]
 
-# bic.list <- unlist(model.evaluation.metric.list[seq(1,length(model.evaluation.metric.list),3)])
-# coef.list <- model.evaluation.metric.list[seq(2,length(model.evaluation.metric.list),3)]
-# lagset.list <- model.evaluation.metric.list[seq(3,length(model.evaluation.metric.list),3)]
-
-
-rm(model.evaluation.metric.list)
-
-
+# Finish timer
 end.time <- Sys.time()
-total.time <- difftime(end.time, start.time)[[1]]
+total.time <- difftime(end.time, start.time, units = "secs")[[1]]
+
+# Put all relavant information about the particular run into an output object
+output.list <- list(adj.r2.list = adj.r2.list,
+                    bic.list = bic.list,
+                    coef.list = coef.list,
+                    lagset.list = lagset.list,
+                    run.time = total.time,
+                    run.parameters = list(model.parameters = model.parameters,
+                                          index.data = index.data,
+                                          response.data = response.data))
+
+# Cleanup
+rm(model.evaluation.metric.list, adj.r2.list, bic.list, coef.list, lagset.list)
+gc()
+
+### SAVE OUTPUT ###
+# Save output object to the output directory
+saveRDS(output.list, paste(output.dir, "single_run_output.RData", sep = "/"))
 
